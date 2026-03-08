@@ -35,7 +35,7 @@ class OptimizationEngine:
                 num_ctx = 1024
             if prompt_length > 1000 and cpu_usage < 50:
                 # Upgrade to larger model if resources are plentiful
-                model = "llama3.2:8b" 
+                model = "llama3.2:latest" 
                 num_ctx = 2048
                 num_predict = 500
         

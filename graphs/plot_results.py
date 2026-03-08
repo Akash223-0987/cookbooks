@@ -43,7 +43,7 @@ def render_plots():
     plt.tight_layout()
     plt.savefig("graphs/outputs/cpu_efficiency.png")
 
-    print(f"📊 Graphs successfully saved to 'graphs/outputs/'!")
+    print(f"Graphs successfully saved to 'graphs/outputs/'!")
 
 if __name__ == "__main__":
     render_plots()

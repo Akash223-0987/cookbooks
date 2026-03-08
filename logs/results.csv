@@ -1,4 +1,7 @@
 Model,NumCtx,NumPredict,Latency(s),CPU(%),RAM(%),Tokens/sec,EfficiencyScore,Mode
-phi3:mini,256,200,16.08,7.9,70.2,9.7,17.53,Optimized
-phi3:mini,256,200,17.13,11.0,83.8,11.68,16.67,Optimized
-phi3:mini,256,200,18.87,9.3,83.0,10.6,19.42,Optimized
+llama3.2:latest,4096,1000,14.72,2.9,63.0,10.74,2.75,Unoptimized
+llama3.2:latest,4096,1000,19.09,13.0,79.2,14.2,1.01,Unoptimized
+llama3.2:latest,4096,1000,22.96,11.8,76.1,14.29,1.11,Unoptimized
+phi3:mini,256,200,17.0,17.4,76.6,9.06,7.87,Optimized
+phi3:mini,256,200,17.52,14.3,84.7,11.42,11.94,Optimized
+phi3:mini,256,200,17.86,15.1,84.5,11.2,11.13,Optimized

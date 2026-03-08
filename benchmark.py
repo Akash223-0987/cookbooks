@@ -12,7 +12,8 @@ class Benchmark:
         
         # Ensure log dir exists
         os.makedirs("logs", exist_ok=True)
-        if not os.path.exists(self.results_path):
+        file_exists = os.path.exists(self.results_path) and os.path.getsize(self.results_path) > 0
+        if not file_exists:
             with open(self.results_path, "w", newline='') as f:
                 writer = csv.writer(f)
                 writer.writerow(["Model", "NumCtx", "NumPredict", "Latency(s)", "CPU(%)", "RAM(%)", "Tokens/sec", "EfficiencyScore", "Mode"])
@@ -50,8 +51,9 @@ class Benchmark:
             
             # Metric calculation
             tokens_per_sec = tokens / latency if latency > 0 else 0
-            # Efficiency = Tokens generated relative to CPU usage
-            efficiency = tokens / (cpu_usage + 1) # +1 avoids DivByZero
+            # Compute Economy Score = (Speed / Resource Overhead) * Context Savings
+            context_savings = 4096 / num_ctx if num_ctx > 0 else 1
+            efficiency = round((tokens_per_sec / (cpu_usage + 1)) * context_savings, 2)
             
             print(f"Result: {latency:.2f}s | {cpu_usage}% CPU | {tokens_per_sec:.2f} tok/s | Eff: {efficiency:.2f}\n")
             

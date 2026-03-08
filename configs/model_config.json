@@ -5,7 +5,7 @@
       "default_ctx": 4096,
       "description": "Short prompts, low compute"
     },
-    "llama3.2:8b": {
+    "llama3.2:latest": {
       "type": "large",
       "default_ctx": 4096,
       "description": "Heavy compute, long reasoning"
