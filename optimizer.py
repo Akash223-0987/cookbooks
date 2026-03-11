@@ -67,10 +67,10 @@ class OptimizationEngine:
         
         ram_trigger = None
         
-        # RAM-aware optimization rules
-        if ram_usage > 80.0:
+        # RAM-aware optimization rules (DEMO: Threshold raised to 95% to show model switching)
+        if ram_usage > 95.0:
             ram_trigger = "High RAM usage detected → reducing context and switching to lightweight model."
-            model = "phi3:latest"
+            model = "phi3:mini"
             num_ctx = min(dynamic_ctx, 256)
             num_predict = 128
             temperature = 0.2
@@ -80,7 +80,7 @@ class OptimizationEngine:
             
         elif ram_usage >= 65.0:
             ram_trigger = "Medium RAM pressure → capping context size and limiting token span."
-            model = "llama3.2:latest" if complexity_score > 1 else "phi3:latest"
+            model = "llama3.2:latest" if complexity_score > 1 else "phi3:mini"
             num_ctx = min(dynamic_ctx, 1024)
             num_predict = 256
             temperature = 0.4
@@ -90,7 +90,7 @@ class OptimizationEngine:
             
         else: # RAM usage < 65%
             # Normal logic uses CPU + complexity stress
-            model = "llama3.2:latest" if complexity_score > 1 else "phi3:latest"
+            model = "llama3.2:latest" if complexity_score > 1 else "phi3:mini"
             # Allow higher context scaling unhindered 
             num_ctx = dynamic_ctx
             num_predict = 512

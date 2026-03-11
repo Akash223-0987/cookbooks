@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inference Insights | Focused Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #05060a;
+            --surface: #0f121a;
+            --card: #161a25;
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #22d3ee;
+            --baseline: #f87171;
+            --text-main: #f3f4f6;
+            --text-dim: #9ca3af;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); padding: 40px; min-height: 100vh; }
+        header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 30px; }
+        header h1 { font-size: 2.2rem; font-weight: 700; color: var(--accent); }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-areas: "stats graph" "table table";
+            grid-template-columns: 420px 1fr;
+            gap: 25px;
+        }
+
+        .stats-col { grid-area: stats; display: flex; flex-direction: column; gap: 20px; }
+        .avg-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; border-left: 6px solid #ccc; }
+        .avg-card.unopt { border-left-color: var(--baseline); }
+        .avg-card.opt { border-left-color: var(--accent); }
+        
+        .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .m-item { display: flex; flex-direction: column; }
+        .m-item span:first-child { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; }
+        .m-item span:last-child { font-size: 1.3rem; font-weight: 700; }
+
+        .graph-area { grid-area: graph; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 30px; }
+        .table-area { grid-area: table; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 30px; margin-top: 10px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; padding: 15px; color: var(--text-dim); border-bottom: 2px solid var(--border); font-size: 0.85rem; }
+        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge-opt { background: rgba(34, 211, 238, 0.1); color: var(--accent); }
+        .badge-unopt { background: rgba(248, 113, 113, 0.1); color: var(--baseline); }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Session Audit Pro</h1>
+        <div style="text-align: right; color: var(--text-dim);">
+            Focus Group: Latest 5 Runs per Mode | Total Snapshots: 10
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        <div class="stats-col">
+            <div class="avg-card unopt">
+                <div style="display:flex; justify-content:space-between; color:var(--text-dim); font-size:0.8rem;">
+                    <span>Baseline (Last 5)</span>
+                    <span>llama3.2:latest</span>
+                </div>
+                
+    <div class="metrics-grid">
+        <div class="m-item"><span>Latency</span><span>22.78s</span></div>
+        <div class="m-item"><span>Speed</span><span>28.54</span></div>
+        <div class="m-item"><span>Score</span><span>2.22</span></div>
+    </div>
+            </div>
+            <div class="avg-card opt">
+                <div style="display:flex; justify-content:space-between; color:var(--text-dim); font-size:0.8rem;">
+                    <span>Elite (Last 5)</span>
+                    <span style="color:var(--accent);">phi3:mini</span>
+                </div>
+                
+    <div class="metrics-grid">
+        <div class="m-item"><span>Latency</span><span>15.9s</span></div>
+        <div class="m-item"><span>Speed</span><span>16.15</span></div>
+        <div class="m-item"><span>Score</span><span>18.64</span></div>
+    </div>
+            </div>
+            <div style="padding: 15px; background: rgba(34,211,238,0.03); border-radius: 12px; font-size: 0.8rem; border: 1px dashed var(--border);">
+                Notice: The system switches models based on real-time RAM usage and complexity score.
+            </div>
+        </div>
+
+        <div class="graph-area">
+            <canvas id="mainChart" height="350"></canvas>
+        </div>
+
+        <div class="table-area">
+            <h3>Consolidated Inference Logs (Focus Group)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Mode</th>
+                        <th>Model</th>
+                        <th>Latency</th>
+                        <th>Tokens/s</th>
+                        <th>CPU/RAM %</th>
+                        <th>Efficiency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <tr>
+            <td>#10</td>
+            <td><span class="badge badge-opt">Optimized</span></td>
+            <td style="font-weight:600;">phi3:mini</td>
+            <td>15.07s</td>
+            <td><strong>16.99</strong></td>
+            <td>6.3% / 81.7%</td>
+            <td style="font-weight:700; color:var(--accent);">25.48</td>
+        </tr>
+        <tr>
+            <td>#9</td>
+            <td><span class="badge badge-opt">Optimized</span></td>
+            <td style="font-weight:600;">llama3.2:latest</td>
+            <td>17.02s</td>
+            <td><strong>15.04</strong></td>
+            <td>14.7% / 77.4%</td>
+            <td style="font-weight:700; color:var(--accent);">4.24</td>
+        </tr>
+        <tr>
+            <td>#8</td>
+            <td><span class="badge badge-opt">Optimized</span></td>
+            <td style="font-weight:600;">phi3:mini</td>
+            <td>15.13s</td>
+            <td><strong>16.92</strong></td>
+            <td>22.0% / 82.4%</td>
+            <td style="font-weight:700; color:var(--accent);">8.37</td>
+        </tr>
+        <tr>
+            <td>#7</td>
+            <td><span class="badge badge-opt">Optimized</span></td>
+            <td style="font-weight:600;">llama3.2:latest</td>
+            <td>16.97s</td>
+            <td><strong>15.09</strong></td>
+            <td>13.9% / 77.9%</td>
+            <td style="font-weight:700; color:var(--accent);">4.58</td>
+        </tr>
+        <tr>
+            <td>#6</td>
+            <td><span class="badge badge-opt">Optimized</span></td>
+            <td style="font-weight:600;">phi3:mini</td>
+            <td>15.3s</td>
+            <td><strong>16.73</strong></td>
+            <td>9.2% / 93.5%</td>
+            <td style="font-weight:700; color:var(--accent);">50.52</td>
+        </tr>
+        <tr>
+            <td>#5</td>
+            <td><span class="badge badge-unopt">Unoptimized</span></td>
+            <td style="font-weight:600;">llama3.2:latest</td>
+            <td>21.1s</td>
+            <td><strong>29.52</strong></td>
+            <td>30.5% / 93.4%</td>
+            <td style="font-weight:700; color:var(--accent);">0.94</td>
+        </tr>
+        <tr>
+            <td>#4</td>
+            <td><span class="badge badge-unopt">Unoptimized</span></td>
+            <td style="font-weight:600;">llama3.2:latest</td>
+            <td>24.07s</td>
+            <td><strong>30.37</strong></td>
+            <td>8.1% / 92.9%</td>
+            <td style="font-weight:700; color:var(--accent);">3.34</td>
+        </tr>
+        <tr>
+            <td>#3</td>
+            <td><span class="badge badge-unopt">Unoptimized</span></td>
+            <td style="font-weight:600;">llama3.2:latest</td>
+            <td>23.13s</td>
+            <td><strong>30.7</strong></td>
+            <td>8.9% / 92.5%</td>
+            <td style="font-weight:700; color:var(--accent);">3.1</td>
+        </tr>
+        <tr>
+            <td>#2</td>
+            <td><span class="badge badge-unopt">Unoptimized</span></td>
+            <td style="font-weight:600;">llama3.2:latest</td>
+            <td>19.14s</td>
+            <td><strong>30.62</strong></td>
+            <td>9.7% / 90.5%</td>
+            <td style="font-weight:700; color:var(--accent);">2.86</td>
+        </tr>
+        <tr>
+            <td>#1</td>
+            <td><span class="badge badge-unopt">Unoptimized</span></td>
+            <td style="font-weight:600;">llama3.2:latest</td>
+            <td>26.44s</td>
+            <td><strong>21.48</strong></td>
+            <td>24.0% / 92.5%</td>
+            <td style="font-weight:700; color:var(--accent);">0.86</td>
+        </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Run 1", "Run 2", "Run 3", "Run 4", "Run 5", "Run 6", "Run 7", "Run 8", "Run 9", "Run 10"],
+                datasets: [
+                    {
+                        label: 'Throughput (T/s)',
+                        data: [21.48, 30.62, 30.7, 30.37, 29.52, 16.73, 15.09, 16.92, 15.04, 16.99],
+                        backgroundColor: ["rgba(248, 113, 113, 0.7)", "rgba(248, 113, 113, 0.7)", "rgba(248, 113, 113, 0.7)", "rgba(248, 113, 113, 0.7)", "rgba(248, 113, 113, 0.7)", "rgba(34, 211, 238, 0.7)", "rgba(34, 211, 238, 0.7)", "rgba(34, 211, 238, 0.7)", "rgba(34, 211, 238, 0.7)", "rgba(34, 211, 238, 0.7)"],
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Efficiency Index',
+                        data: [0.86, 2.86, 3.1, 3.34, 0.94, 50.52, 4.58, 8.37, 4.24, 25.48],
+                        type: 'line',
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        fill: false,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+                    y1: { position: 'right', grid: { display: false }, ticks: { color: '#22d3ee' } },
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af' } }
+                },
+                plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', boxWidth: 12 } } }
+            }
+        });
+    </script>
+</body>
+</html>
